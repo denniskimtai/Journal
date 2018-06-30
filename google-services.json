@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "24067664339",
+    "firebase_url": "https://journalalc-d5846.firebaseio.com",
+    "project_id": "journalalc-d5846",
+    "storage_bucket": "journalalc-d5846.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24067664339:android:ae9a8b8f7ef2dc54",
+        "android_client_info": {
+          "package_name": "com.codegreed_devs.journalalc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24067664339-0phg6snd9cpjk2td57g29al4kp4pbpbi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbB6AY0ASr8fbk6Qwl3OjwcuXT_7wdfEU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
