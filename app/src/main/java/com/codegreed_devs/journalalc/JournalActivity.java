@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,11 +26,13 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
     private Button btnSave;
 
     FirebaseFirestore db;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journal);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         db = FirebaseFirestore.getInstance();
 
@@ -77,8 +80,9 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
                 String Thought = editTextThought.getText().toString().trim();
 
                 if (!fieldIsEmpty(Heading, Thought)) {
+                    String journal = firebaseAuth.getUid();
 
-                    CollectionReference dbDetails = db.collection("Journal");
+                    CollectionReference dbDetails = db.collection(journal);
 
                     Map<String, Object> details = new HashMap<>();
 //                            Details details = new Details(

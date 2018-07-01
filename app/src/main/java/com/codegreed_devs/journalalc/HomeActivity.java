@@ -36,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         firebaseAuth = FirebaseAuth.getInstance();
+        String Journal = firebaseAuth.getUid();
 
         detailsList = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
@@ -50,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         //Query the dp to get documents stored
-        db.collection("Journal").get()
+        db.collection(Journal).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot documentSnapshots) {
