@@ -39,10 +39,10 @@
 
         <Button
             android:layout_margin="15dp"
-            android:text="Register"
+            android:text="Login"
             android:textColor="#fff"
             android:background="#0d47a1"
-            android:id="@+id/btnRegister"
+            android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -50,8 +50,8 @@
         <TextView
             android:textColor="#f9faf8"
             android:textAlignment="center"
-            android:text="Already have an account? Sign In"
-            android:id="@+id/textViewSignIn"
+            android:text="Dont have an account? Sign Up"
+            android:id="@+id/textViewSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -61,10 +61,10 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="91dp"
-        android:layout_height="87dp"
+        android:layout_height="85dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="23dp"
         app:srcCompat="@drawable/login" />
 
 </RelativeLayout>

@@ -7,4 +7,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <string name="Logout">Log out</string>
+    <string name="Update">Update</string>
+    <string name="Thought">New</string>
 </resources>

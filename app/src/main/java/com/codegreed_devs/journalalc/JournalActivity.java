@@ -23,7 +23,6 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
 
     private EditText editTextHeading, editTextThought;
     private Button btnSave;
-    private TextView textViewThought;
 
     FirebaseFirestore db;
 
@@ -36,9 +35,6 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
 
         editTextHeading = findViewById(R.id.editTextHeading);
         editTextThought = findViewById(R.id.editTextThought);
-
-        textViewThought = findViewById(R.id.textViewThought);
-        textViewThought.setOnClickListener(this);
 
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
@@ -70,13 +66,6 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
                     case R.id.btnSave: {
                         saveProducts();
                     }
-
-                    //Text view is clicked
-                    case R.id.textViewThought:{
-                        finish();
-                        Intent intent = new Intent(JournalActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                    }
                     break;
                 }
 
@@ -89,7 +78,7 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
 
                 if (!fieldIsEmpty(Heading, Thought)) {
 
-                    CollectionReference dbDetails = db.collection("details");
+                    CollectionReference dbDetails = db.collection("Journal");
 
                     Map<String, Object> details = new HashMap<>();
 //                            Details details = new Details(
@@ -118,6 +107,9 @@ public class JournalActivity extends AppCompatActivity implements View.OnClickLi
                                 }
                             });
                 }
+                finish();
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
 
             }
     }

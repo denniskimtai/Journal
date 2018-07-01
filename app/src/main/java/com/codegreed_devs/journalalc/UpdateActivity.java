@@ -1,5 +1,6 @@
 package com.codegreed_devs.journalalc;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -73,6 +74,9 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
                     });
 
         }
+        finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     public void onClick(View v){
@@ -82,6 +86,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             }
         }
+
     }
 
 }

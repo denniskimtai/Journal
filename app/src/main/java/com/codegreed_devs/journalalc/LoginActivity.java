@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,86 +17,81 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Map;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editTextEmail, editTextPassword;
-    private Button btnRegister;
-    private TextView textViewSignIn;
+    private Button btnSignIn;
+    private TextView textViewSignUp;
 
     ProgressDialog progressDialog;
-
-    private FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
+        progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
+        //Track if user is already signed in
         if (firebaseAuth.getCurrentUser() != null){
             finish();
-            Intent intent = new Intent(this,HomeActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         }
 
         editTextEmail = findViewById(R.id.editTextEmail);
-        editTextPassword =  findViewById(R.id.editTextPassword);
-        progressDialog = new ProgressDialog(this);
+        editTextPassword = findViewById(R.id.editTextPassword);
 
-        btnRegister =  findViewById(R.id.btnRegister);
-        btnRegister.setOnClickListener(this);
+        btnSignIn = findViewById(R.id.btnSignIn);
+        btnSignIn.setOnClickListener(this);
 
-        textViewSignIn = findViewById(R.id.textViewSignIn);
-        textViewSignIn.setOnClickListener(this);
-
+        textViewSignUp = findViewById(R.id.textViewSignUp);
+        textViewSignUp.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v == btnRegister){
-            registerUser();
+        if (v == btnSignIn){
+            userLogin();
         }
-        if (v == textViewSignIn){
+
+        if (v == textViewSignUp){
             finish();
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
     }
 
-    private void registerUser() {
+    private void userLogin() {
+
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        //Email is empty
         if (TextUtils.isEmpty(email)){
             Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show();
-            //Stop execution
-            return;
-        }
-        //Password is empty
-        if (TextUtils.isEmpty(password)){
-            Toast.makeText(this, "Please enter your Password", Toast.LENGTH_SHORT).show();
-            //stop execution
-            return;
         }
 
-        //show progressbar while registering user
-        progressDialog.setMessage("Registering user...");
+        if (TextUtils.isEmpty(password)){
+            Toast.makeText(this, "Please enter your password", Toast.LENGTH_SHORT).show();
+        }
+
+        progressDialog.setMessage("Signing In. Please wait...");
         progressDialog.show();
 
-        firebaseAuth.createUserWithEmailAndPassword(email,password)
+        //Sign in with email and password
+        firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+
                         if (task.isSuccessful()){
                             finish();
-                            Toast.makeText(MainActivity.this, "Registration successfull", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
-                        }else {
-                            Toast.makeText(MainActivity.this, "Registration failed. Please try again", Toast.LENGTH_SHORT).show();
                         }
+
+
                     }
                 });
     }
