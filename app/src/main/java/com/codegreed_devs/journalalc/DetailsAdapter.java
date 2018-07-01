@@ -2,6 +2,7 @@ package com.codegreed_devs.journalalc;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,7 +48,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.DetailsV
         return detailsList.size();
     }
 
-    class DetailsViewHolder extends RecyclerView.ViewHolder{
+    class DetailsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView textViewHeading , textViewThought;
 
@@ -56,6 +57,17 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.DetailsV
 
             textViewHeading = itemView.findViewById(R.id.textViewHeading);
             textViewThought = itemView.findViewById(R.id.textViewThought);
+
+            //Attach click listener
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Details details = detailsList.get(getAdapterPosition());
+            Intent intent = new Intent(mCtx, UpdateActivity.class);
+            intent.putExtra("detail", details);
+            mCtx.startActivity(intent);
         }
     }
 

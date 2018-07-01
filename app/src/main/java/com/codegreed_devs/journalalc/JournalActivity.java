@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,10 +16,14 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class JournalActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
+
+public class JournalActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editTextHeading, editTextThought;
     private Button btnSave;
+    private TextView textViewThought;
 
     FirebaseFirestore db;
 
@@ -30,51 +34,21 @@ public class JournalActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        editTextHeading = (EditText) findViewById(R.id.editTextHeading);
-        editTextThought = (EditText) findViewById(R.id.editTextThought);
-        btnSave = (Button) findViewById(R.id.btnSave);
+        editTextHeading = findViewById(R.id.editTextHeading);
+        editTextThought = findViewById(R.id.editTextThought);
+
+        textViewThought = findViewById(R.id.textViewThought);
+        textViewThought.setOnClickListener(this);
+
+        btnSave = findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(this);
 
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String Heading = editTextHeading.getText().toString().trim();
-                String Thought = editTextThought.getText().toString().trim();
-
-                if (!validateInputs(Heading,Thought)){
-
-                    CollectionReference dbDetails = db.collection("Details");
-
-                    Details details = new Details(
-                            Heading,
-                            Thought
-                    );
-                    //Save to firestone and listen for success or failure
-                    dbDetails.add(details)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-
-                                    Toast.makeText(JournalActivity.this, "Saved successfully", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(JournalActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
-
-                Intent intent = new Intent(JournalActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-        });
 
     }
 
-    private boolean validateInputs(String Heading, String Thought){
+
+    private boolean fieldIsEmpty(String Heading, String Thought){
         if(Heading.isEmpty()){
             editTextHeading.setError("Heading required");
             editTextHeading.requestFocus();
@@ -88,4 +62,63 @@ public class JournalActivity extends AppCompatActivity {
         }
         return false;
     }
-}
+
+            public void onClick(View v) {
+
+                switch (v.getId()) {
+                    //Save button is clicked
+                    case R.id.btnSave: {
+                        saveProducts();
+                    }
+
+                    //Text view is clicked
+                    case R.id.textViewThought:{
+                        finish();
+                        Intent intent = new Intent(JournalActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
+                    break;
+                }
+
+            }
+
+            public void saveProducts(){
+
+                String Heading = editTextHeading.getText().toString().trim();
+                String Thought = editTextThought.getText().toString().trim();
+
+                if (!fieldIsEmpty(Heading, Thought)) {
+
+                    CollectionReference dbDetails = db.collection("details");
+
+                    Map<String, Object> details = new HashMap<>();
+//                            Details details = new Details(
+//                                    Heading,
+//                                    Thought
+//                            );
+
+                    details.put("Heading", Heading);
+                    details.put("Thought", Thought);
+
+
+                    //Save to firestone and listen for success or failure
+                    dbDetails.add(details)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+
+                                    Toast.makeText(JournalActivity.this, "Saved successfully", Toast.LENGTH_SHORT).show();
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(JournalActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+
+            }
+    }
+
